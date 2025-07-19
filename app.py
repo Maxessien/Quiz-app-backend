@@ -4,7 +4,10 @@ import uuid
 
 
 app = Flask(__name__)
-CORS(app)
+# CORS(app)
+CORS(app, origins=[
+    'https://maxquiz.netlify.app'
+])
 
 users=[{'confirmPassword': 'maxadmin12354',
         'email': 'admin@gmail.com',
