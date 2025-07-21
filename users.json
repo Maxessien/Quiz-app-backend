@@ -1,0 +1,19 @@
+[
+    {
+        "date": "07/20/25_15:59:21"
+    },
+    {
+        "confirmPassword": "maxadmin12354",
+        "email": "admin@gmail.com",
+        "name": "Max Essien",
+        "password": "maxadmin12354",
+        "userId": "21641dfa-65b7-4aaa-9fe9-418286555152"
+    },
+    {
+        "name": "jamie",
+        "email": "jamie@gmail.com",
+        "password": "jam12345",
+        "confirmPassword": "jam12345",
+        "userId": "06311dd8-dfb1-4e3e-acb8-e5a049b2f893"
+    }
+]

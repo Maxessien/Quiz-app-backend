@@ -1,0 +1,32 @@
+[
+    {
+        "quizzesTaken": [
+            {
+                "courseCode": "CSC 112",
+                "quizId": "csc112_lecture1",
+                "quizTitle": "CSC 112 Lecture 1 Quiz",
+                "score": "0.00",
+                "timeStamp": "Mon Jul 21 2025 09:10:25 GMT+0100 (West Africa Standard Time)"
+            },
+            {
+                "courseCode": "CSC 102",
+                "quizId": "csc102_lecture1",
+                "quizTitle": "CSC 102 Lecture 1 Quiz",
+                "score": "13.33",
+                "timeStamp": "Mon Jul 21 2025 09:10:58 GMT+0100 (West Africa Standard Time)"
+            },
+            {
+                "timeStamp": "Mon Jul 21 2025 09:15:18 GMT+0100 (West Africa Standard Time)",
+                "quizId": "gns102_lecture1",
+                "courseCode": "GNS 102",
+                "quizTitle": "GNS 102 Lecture 1 Quiz",
+                "score": "13.33"
+            }
+        ],
+        "userId": "21641dfa-65b7-4aaa-9fe9-418286555152"
+    },
+    {
+        "quizzesTaken": [],
+        "userId": "06311dd8-dfb1-4e3e-acb8-e5a049b2f893"
+    }
+]
