@@ -1,8 +1,10 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, session
 from flask_cors import CORS
-from datetime import datetime
 import uuid
 import json
+from utils.utils import load_users, current_time_stamp
+from utils.users_utils import add_user, update_user, fetch_all, fetch_user_by_email, delete_user, format_user_tuple, fetch_by_email_and_password
+from utils.user_results_data import create, add_new_result, format_json_strings, remove_results_by_user, fetch_all_results, fetch_results_by_user, format_fetched_results
 
 
 app = Flask(__name__)
@@ -11,114 +13,81 @@ CORS(app, origins=[
     'https://maxquiz.netlify.app'
 ])
 
-user_db = 'users.json'
 
-def load_users():
-    with open(user_db, 'r') as f:
-        return json.load(f)
+# fetch_all()
 
-print(load_users())
-def save_users(user_data):
-    with open(user_db, 'w') as f:
-        json.dump(user_data, f, indent=4)
+# delete_user("6ffee068-4c55-4729-95c5-45a9aa8d185d")
+# fetch_all()
 
-print(datetime.now().strftime('%D_%H:%M:%S'))
+create()
+
+# fetch_all_results()
 
 
-# users=[{'confirmPassword': 'maxadmin12354',
-#         'email': 'admin@gmail.com',
-#         'name': 'Max Essien', 'password': 'maxadmin12354',
-#         'userId': 'a23fd8fc-23d7-4295-b7e6-cea08c045077'}]
 @app.route('/download-data')
 def download_data():
-    user_dict = load_users()
-    date = datetime.now().strftime('%D_%H:%M:%S')
-    user_dict[0]={"date": date}
-    return jsonify(user_dict)
+    return jsonify(fetch_all_results())
+
+@app.route('/download-data-users')
+def download_data():
+    return jsonify(fetch_all())
 
 
 @app.route('/register', methods=["POST"])
 def register():
     data = request.json
-    users_dict = load_users()
-    print(data)
-    for i in range(1, len(users_dict)):
-        if users_dict[i]["email"]==data["email"]:
-            return jsonify(True)
-    user_id = str(uuid.uuid4())
-    data_with_id = {**data, 'userId': user_id}
-    user_dict = load_users()
-    user_dict.append(data_with_id)
-    save_users(user_dict)
-    print(user_dict)
-    return jsonify(False)
+    user_exists = fetch_user_by_email(data["email"])
+    if not user_exists:
+        new_id = str(uuid.uuid4())
+        add_user(data["name"], data["email"], data["password"], new_id)
+        fetch_all()
+        return jsonify({"success": True, "message": "Account successfully created"})
+    else:
+        fetch_all()
+        return jsonify({"success": False, "message": "User already exists"})
+    
+
 
 @app.route('/update', methods=["POST"])
 def update():
     data = request.json
-    users_dict = load_users()
-    for i in range(1, len(users_dict)):
-        if users_dict[i]['userId']==data['userId']:
-            users_dict[i]=data
-    save_users(users_dict)
+    update_user(data["name"], data["email"], data["password"], data["userId"])
     return jsonify({"message": "Account update successful"}), 200
+
+
+
 
 @app.route('/login', methods=["POST"])
 def login():
     data = request.json
-    users_dict = load_users()
-    for i in range(1, len(users_dict)):
-        if users_dict[i]["email"]==data["email"] and users_dict[i]["password"]==data["password"]:
-            print(users_dict[i], 'login')
-            user=True
-            return jsonify(users_dict[i])
-        else:
-            user=False
-    if not user:
+    user_exists = fetch_by_email_and_password(data["email"], data["password"])
+    if not user_exists:
+        print(user_exists)
         return jsonify(False)
+    else:
+        print(user_exists)
+        return format_user_tuple(user_exists[0])
 
-account_data_db = "users-account-data.json"
 
-def load_account_data():
-    with open(account_data_db, 'r') as f:
-        return json.load(f)
 
-def update_data(new_account_data):
-    with open(account_data_db, 'w') as f:
-        return json.dump(new_account_data, f, indent=4)
-
-@app.route('/update_account_data', methods=['POST'])
-def update_account_data():
+@app.route('/update_results_db', methods=['POST'])
+def update_results_db():
     data = request.json
-    account_data = load_account_data()
-    found = False
-    for i in range(len(account_data)):
-        if account_data[i]['userId']==data['userId']:
-            account_data[i]=data
-            found = True
-            update_data(account_data)
-            return jsonify(account_data[i])
-    if not found:
-        account_data.append(data)
-    update_data(account_data)
-    return jsonify(account_data)
+    json_quiz_data = json.dumps(data["quiz_data"])
+    json_selected_answers = json.dumps(data["selected_answers"])
+    json_correct_answers = json.dumps(data["correct_answers"])
+    print(json_quiz_data)
+    add_new_result(data["user_id"], data["course_code"], data["score"], json_quiz_data, 
+                    json_selected_answers, json_correct_answers, data["time_stamp"])
+    return jsonify({"success": True, "message": "update successful"})
+    
 
-@app.route('/account_data', methods=['POST'])
-def account_data():
-    data = request.json
-    account_data = load_account_data()
-    found=False
-    for i in range(len(account_data)):
-        if account_data[i]["userId"]==data["userId"]:
-            found=True
-            return jsonify(account_data[i])
-    if not found:
-        account_data.append({
-            "quizzesTaken": [],
-            "userId": data["userId"]
-        })
-    update_data(account_data)
-    return jsonify(account_data)
+@app.route('/results_data/<string:user_id>')
+def results_data(user_id):
+    print(user_id, "iddd")
+    results = fetch_results_by_user(user_id)
+    result_dict = format_fetched_results(results)
+    return jsonify(result_dict)
 
 
 if __name__  == "__main__":
