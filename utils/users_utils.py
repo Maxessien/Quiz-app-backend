@@ -44,11 +44,17 @@ def fetch_user_by_email(email):
     cursor.execute("SELECT * FROM users WHERE email = (?)", (email,))
     return cursor.fetchall()
 
+def fetch_user_by_id(id):
+    connection = sqlite3.connect('users.db')
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM users WHERE user_id = (?)", (id,))
+    return cursor.fetchone()
+
 def fetch_by_email_and_password(email, password):
     connection = sqlite3.connect('users.db')
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM users WHERE email = (?) and password = (?)", (email, password))
-    return cursor.fetchall()
+    return cursor.fetchone()
 
 def delete_user(id):
     print(id)
@@ -58,12 +64,13 @@ def delete_user(id):
     connection.commit()
     connection.close()
 
-def format_user_tuple(user_tuple):
+def format_user_tuple(user_tuple, token):
     if user_tuple:
         user_dict = {
             "name": user_tuple[0],
             "email": user_tuple[1],
             "password": user_tuple[2],
-            "userId": user_tuple[3]
+            "userId": user_tuple[3],
+            "sessionToken": token
         }
         return user_dict
