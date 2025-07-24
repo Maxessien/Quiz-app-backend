@@ -46,7 +46,9 @@ def fetch_results_by_user(id):
     cursor.execute(
         "SELECT * FROM users_results WHERE user_id = (?)", (id,)
     )
-    return cursor.fetchall()
+    result = cursor.fetchall()
+    connection.close()
+    return result
 
 def format_fetched_results(results_list):
     formatted_list = []
@@ -71,7 +73,9 @@ def fetch_all_results():
     cursor.execute(
         "SELECT * FROM users_results"
     )
-    return cursor.fetchall()
+    results = cursor.fetchall()
+    connection.close()
+    return results
     # print(cursor.fetchall())
     # connection.close()
 

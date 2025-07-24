@@ -43,11 +43,10 @@ def register():
     if not user_exists:
         new_id = str(uuid.uuid4())
         add_user(data["name"], data["email"], data["password"], new_id)
-        fetch_all()
         return jsonify({"success": True, "message": "Account successfully created"}), 201
     else:
         fetch_all()
-        return jsonify({"success": False, "message": "User already exists"}), 409
+        return jsonify({"success": False, "message": "User already exists"})
     
 
 
@@ -66,12 +65,12 @@ def login():
     token = str(uuid.uuid4())
     expiry_time = (int(datetime.now().timestamp()*1000)) + (60*60*1000)
     user_exists = fetch_by_email_and_password(data["email"], data["password"])
-    add_session(token, user_exists[3], expiry_time)
-    print(fetch_all_sessions())
     if not user_exists:
         print(user_exists)
-        return '', 401
+        return ''
     else:
+        add_session(token, user_exists[3], expiry_time)
+        print(fetch_all_sessions())
         print(user_exists)
         return jsonify(format_user_tuple(user_exists, token))
     
@@ -91,6 +90,14 @@ def login_with_token(token):
             return jsonify(format_user_tuple(logged_user, token))
     else:
         return '', 401
+
+@app.route("/delete_with_token/<string:token>", methods=['POST'])
+def delete_with_token(token):
+    print(token)
+    delete_session_with_token(token)
+    return ({"message": "successful"}), 200
+
+
     
 
 

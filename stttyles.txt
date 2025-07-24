@@ -1,0 +1,300 @@
+@use '../../../assets/functions_mixins' as *;
+
+.home-header{
+  padding: rem(10) rem(50);
+  width: 100vw;
+  height: rem(80);
+  @include flex(center, space-between);
+  background: #f2f4f7;
+  @include media(small){
+    padding: rem(20) rem(20);
+  height: rem(90);
+  }
+  img {
+    height: 100%;
+    transform: scaleX(1.13);
+  }
+}
+
+.logo-seperator{
+    @include flex(center, center, rem(20));
+    .hamburger-icon, .close-icon{
+        z-index: 999;
+    }
+    .home-nav{
+        @include media(medium){
+            position: fixed;
+            height: 100vh;
+            width: 100vw;
+            top: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.89);
+            z-index: 99;
+        }
+        &-list{
+            @include flex(center, center, rem(15));
+            @include media(medium){
+                flex-direction: column;
+                padding-top: rem(100);
+            }
+            li{
+                a{
+                    color: rgb(0, 0, 36);
+                    font-size: rem(18);
+                    font-weight: 500;
+                    transition: all 200ms linear;
+                    @include media(medium){
+                        color: rgb(230, 230, 230);
+                    font-size: rem(20);
+            }
+                    &:hover{
+                        color: rgb(11, 129, 175);
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+
+@use "../../../assets/functions_mixins" as *;
+
+.hero-section {
+  @include flex(center, space-between, rem(20));
+  position: relative;
+  width: 100vw;
+  height: 90vh;
+  max-height: rem(600);
+  background: rgba(0, 0, 0, 0.726);
+  color: rgb(224, 224, 224);
+  padding: rem(20);
+  @include media(medium){
+    flex-direction: column-reverse;
+    height: max-content;
+  }
+  .hero-content {
+    width: 60%;
+    @include flex(flex-start, center, rem(20), column);
+    padding-right: rem(40);
+  @include media(medium){
+    align-items: center;
+    width: 100%;
+    padding-right: rem(0);
+  }
+    h1 {
+      font-size: rem(50);
+      @include media(large) {
+        font-size: rem(40);
+      }
+      @include media(small) {
+        font-size: rem(30);
+      }
+    }
+    p {
+      font-size: rem(20);
+      @include media(large) {
+        font-size: rem(18);
+      }
+      @include media(medium){
+        text-align: center;
+      }
+      @include media(small) {
+        font-size: rem(16);
+      }
+    }
+    .cta-button {
+      background: rgb(29, 0, 63);
+      color: rgb(235, 235, 235);
+      padding: rem(10) rem(20);
+      border-radius: rem(5);
+      font-size: rem(18);
+      text-decoration: none;
+      transition: all 300ms linear;
+      cursor: pointer;
+      &:hover {
+        background: rgb(78, 1, 129);
+      }
+    }
+  }
+  .hero-image {
+    width: 40%;
+    position: relative;
+    @include flex(center, center, rem(20));
+    @include media(medium){
+      width: 100%;
+      height: 40vh;
+    }
+    .light-bulb-glow {
+      position: absolute;
+      top: 3%;
+      left: 50%;
+      width: 50%;
+      height: 50%;
+      border-radius: 50%;
+      //   transform: ;
+      background: rgb(243, 136, 48);
+      filter: blur(50px);
+      @include media(medium){
+      width: 25%;
+      height: 45%;
+      filter: blur(30px);
+    }@include media(small){
+      width: 35%;
+      height: 50%;
+      filter: blur(30px);
+    }
+    }
+    img {
+      width: auto;
+      height: 100%;
+      border-radius: rem(10);
+      backdrop-filter: brightness(1.5);
+      background: rgba(0, 0, 0, 0.308);
+      // @include media(large) {
+      //   width: 80%;
+      // max-height: 100%;
+      // }
+      // @include media(small) {
+      //   width: 100%;
+      // }
+    }
+  }
+}
+
+@keyframes lightSwitch {
+  0% {
+    background: rgba(243, 136, 48, 0.37);
+  }
+  50% {
+    background: rgb(243, 136, 48);
+  }
+  100% {
+    background: rgba(243, 136, 48, 0.37);
+  }
+}
+
+
+@use "../../../assets/functions_mixins" as *;
+
+.home-features {
+  @include flex(center, space-between, rem(20));
+  width: 100vw;
+  height: 75vh;
+  max-height: rem(500);
+  min-height: max-content;
+  background: rgb(203, 172, 252);
+  overflow: hidden;
+  @include media(medium) {
+    flex-direction: column-reverse;
+    gap: rem(10);
+    height: max-content;
+  max-height: max-content;
+  }
+  .features-content {
+    width: 60%;
+    padding: rem(20);
+    @include flex(flex-start, center, rem(15), column);
+    color: rgb(22, 22, 22);
+    @include media(medium) {
+      align-items: center;
+      width: 100%;
+    }
+    h2 {
+      font-size: rem(35);
+      @include media(medium) {
+        text-align: center;
+          font-size: rem(30);
+      }
+    }
+    ul {
+      @include flex(flex-start, center, rem(10), column);
+      @include media(medium) {
+        align-items: center;
+      }
+      li {
+        h3 {
+          font-size: rem(25);
+          @include media(medium) {
+            text-align: center;
+          font-size: rem(20);
+          }
+        }
+        p {
+          font-size: rem(18);
+          font-weight: 500;
+          @include media(medium) {
+            text-align: center;
+          font-size: rem(16);
+          }
+        }
+      }
+    }
+  }
+
+  .features-showcase {
+    width: 40%;
+    height: 100%;
+    @include media(medium) {
+      height: 45vh;
+      width: max-content;
+    }
+    img {
+      height: 100%;
+      opacity: 0;
+    }
+  }
+}
+
+
+@use "../../../assets/functions_mixins" as *;
+
+.cta-section {
+  @include flex(center, space-between);
+  width: 100vw;
+  background: rgb(15, 15, 15);
+  color: rgb(212, 212, 212);
+  padding: rem(25);
+  overflow: hidden;
+  @include media(medium) {
+    flex-direction: column;
+    gap: rem(15);
+    justify-content: center;
+  }
+  section {
+    @include flex(center, center, rem(20), column);
+    width: 50%;
+    opacity: 0;
+    transform: translateX(-20%);
+    @include media(medium) {
+      width: 100%;
+    }
+    .register-cta {
+      transform: translateX(20%);
+    }
+    h2 {
+      font-size: rem(40);
+      @include media(large) {
+        font-size: rem(30);
+      }
+      @include media(medium) {
+        font-size: rem(25);
+      }
+    }
+    button {
+      font-size: rem(17);
+      padding: rem(10) rem(15);
+      border-radius: rem(5);
+      transition: all 200ms linear;
+      color: rgb(212, 212, 212);
+      background: rgb(0, 56, 102);
+      cursor: pointer;
+      @include media(medium) {
+        padding: rem(7) rem(11);
+      }
+      &:hover {
+        background: rgb(1, 77, 139);
+      }
+    }
+  }
+}

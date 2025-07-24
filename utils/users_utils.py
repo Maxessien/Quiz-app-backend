@@ -21,7 +21,8 @@ def add_user(name, email, password, id):
     cursor.execute("INSERT INTO users VALUES(?, ?, ?, ?)",
                     (name, email, password, id))
     connection.commit()
-    cursor.execute("SELECT * FROM users")
+    # cursor.execute("SELECT * FROM users")
+    connection.close()
 
 def update_user(name, email, password, id):
     connection = sqlite3.connect('users.db')
@@ -35,26 +36,34 @@ def fetch_all():
     connection = sqlite3.connect('users.db')
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM users")
-    return cursor.fetchall()
+    users = cursor.fetchall()
+    connection.close()
+    return users
     # print(cursor.fetchall())
 
 def fetch_user_by_email(email):
     connection = sqlite3.connect('users.db')
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM users WHERE email = (?)", (email,))
-    return cursor.fetchall()
+    user = cursor.fetchall()
+    connection.close()
+    return user
 
 def fetch_user_by_id(id):
     connection = sqlite3.connect('users.db')
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM users WHERE user_id = (?)", (id,))
-    return cursor.fetchone()
+    user = cursor.fetchone()
+    connection.close()
+    return user
 
 def fetch_by_email_and_password(email, password):
     connection = sqlite3.connect('users.db')
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM users WHERE email = (?) and password = (?)", (email, password))
-    return cursor.fetchone()
+    user = cursor.fetchone()
+    connection.close()
+    return user
 
 def delete_user(id):
     print(id)
