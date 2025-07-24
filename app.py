@@ -117,7 +117,9 @@ def update_results_db():
 @app.route('/reset_results_data', methods=['POST'])
 def reset_results_data():
     data = request.json
-    remove_results_by_user(data['user_id'])
+    user_result = fetch_results_by_user(data['user_id'])
+    if user_result:
+        remove_results_by_user(data['user_id'])
     return '', 204
 
 @app.route('/results_data/<string:user_id>')
