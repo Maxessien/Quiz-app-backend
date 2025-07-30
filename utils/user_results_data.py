@@ -75,7 +75,7 @@ def fetch_all_results():
     )
     results = cursor.fetchall()
     connection.close()
-    return results
+    return format_fetched_results(results)
     # print(cursor.fetchall())
     # connection.close()
 

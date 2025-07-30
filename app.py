@@ -24,7 +24,7 @@ print(int(datetime.now().timestamp()*1000))
 create()
 create_session_table()
 
-# fetch_all_results()
+# print(fetch_all_results(), "hello")
 
 
 @app.route('/download-data')
@@ -66,12 +66,9 @@ def login():
     expiry_time = (int(datetime.now().timestamp()*1000)) + (60*60*1000)
     user_exists = fetch_by_email_and_password(data["email"], data["password"])
     if not user_exists:
-        print(user_exists)
         return ''
     else:
         add_session(token, user_exists[3], expiry_time)
-        print(fetch_all_sessions())
-        print(user_exists)
         return jsonify(format_user_tuple(user_exists, token))
     
 @app.route("/login_with_token/<string:token>")
@@ -117,9 +114,9 @@ def update_results_db():
 @app.route('/reset_results_data', methods=['POST'])
 def reset_results_data():
     data = request.json
-    user_result = fetch_results_by_user(data['userId'])
+    user_result = fetch_results_by_user(data['user_id'])
     if user_result:
-        remove_results_by_user(data['userId'])
+        remove_results_by_user(data['user_id'])
     return '', 204
 
 @app.route('/results_data/<string:user_id>')
